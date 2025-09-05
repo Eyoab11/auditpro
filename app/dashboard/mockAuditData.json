@@ -1,0 +1,43 @@
+{
+  "healthScore": 78,
+  "detectedTags": [
+    { "name": "Google Analytics", "status": "OK", "icon": "FaGoogle" },
+    { "name": "Facebook Pixel", "status": "Warning", "icon": "FaFacebook" },
+    { "name": "Twitter Conversion", "status": "OK", "icon": "FaTwitter" },
+    { "name": "LinkedIn Insight", "status": "Issue", "icon": "FaLinkedin" }
+  ],
+  "performanceMetrics": {
+    "loadTime": {
+      "current": "2.8s",
+      "data": [3.2, 3.0, 2.9, 2.8, 2.7, 2.6, 2.5]
+    },
+    "firstContentfulPaint": {
+      "current": "1.5s",
+      "data": [2.0, 1.9, 1.8, 1.7, 1.6, 1.5, 1.4]
+    },
+    "largestContentfulPaint": {
+      "current": "3.2s",
+      "data": [4.0, 3.8, 3.6, 3.4, 3.2, 3.0, 2.8]
+    }
+  },
+  "recommendations": [
+    {
+      "type": "warning",
+      "title": "Optimize Images",
+      "description": "Compress images to reduce load time by 20%.",
+      "impact": "High"
+    },
+    {
+      "type": "issue",
+      "title": "Fix Broken Links",
+      "description": "Several links are returning 404 errors.",
+      "impact": "Medium"
+    },
+    {
+      "type": "warning",
+      "title": "Enable Caching",
+      "description": "Implement browser caching for static assets.",
+      "impact": "High"
+    }
+  ]
+}

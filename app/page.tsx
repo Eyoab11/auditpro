@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import { useMemo, useRef } from 'react';
 import Carousel from './components/Carousel';
 import Footer from './components/Footer';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 function SnowField({ count = 1500 }: { count?: number }) {
   const pointsRef = useRef<any>(null);
@@ -56,20 +59,104 @@ function SnowField({ count = 1500 }: { count?: number }) {
 }
 
 export default function Home() {
+  const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-8 py-6 shadow-sm">
+      <nav className="flex items-center justify-between px-8 py-6 shadow-sm relative">
         <div className="flex items-center gap-2">
           <Image src="/globe.svg" alt="AuditPro Logo" width={32} height={32} />
           <span className="font-bold text-xl tracking-tight">AuditPro</span>
         </div>
+        
+        {/* Desktop Navigation */}
         <ul className="hidden md:flex gap-8 text-base font-medium">
           <li><a href="#features" className="hover:text-purple-600 transition">Features</a></li>
           <li><a href="#about" className="hover:text-purple-600 transition">About</a></li>
           <li><a href="#contact" className="hover:text-purple-600 transition">Contact</a></li>
+          <li><Link href="/report-history" className="hover:text-purple-600 transition">History</Link></li>
         </ul>
-        <a href="#get-started" className="px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition hidden md:inline-block">Get Started</a>
+
+        {/* Mobile Hamburger Menu */}
+        <div className="md:hidden flex items-center gap-4">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2 rounded-lg hover:bg-white/10 transition"
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {isMenuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Desktop Right Section */}
+        <Link href="/auth/signup" className="hidden md:inline-block px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition">Get Started</Link>
+
+        {/* Mobile Menu Overlay */}
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-50 border-t">
+            <div className="px-8 py-4 space-y-4">
+              <a 
+                href="#features" 
+                className="block py-2 hover:text-purple-600 transition"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Features
+              </a>
+              <a 
+                href="#about" 
+                className="block py-2 hover:text-purple-600 transition"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </a>
+              <a 
+                href="#contact" 
+                className="block py-2 hover:text-purple-600 transition"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
+              </a>
+              <Link 
+                href="/report-history" 
+                className="block py-2 hover:text-purple-600 transition"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                History
+              </Link>
+              <div className="pt-4 border-t border-gray-200">
+                <Link 
+                  href="/auth/signup" 
+                  className="inline-block px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Get Started
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
@@ -106,7 +193,10 @@ export default function Home() {
           </p>
           {/* Search field with side button */}
           <form
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={(e) => {
+              e.preventDefault();
+              router.push('/auth/login');
+            }}
             className="mx-auto mb-6 w-full max-w-3xl"
             aria-label="Website scan"
           >
@@ -138,7 +228,7 @@ export default function Home() {
               </div>
             </div>
           </form>
-          <a href="#get-started" className="px-6 py-3 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition font-semibold text-lg">Get Started</a>
+          <Link href="/auth/signup" className="px-6 py-3 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition font-semibold text-lg">Get Started</Link>
         </motion.div>
       </section>
       {/* Features Section */}
