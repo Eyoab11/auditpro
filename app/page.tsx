@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Canvas, useFrame } from '@react-three/fiber';
 import { motion } from 'framer-motion';
 import { useMemo, useRef } from 'react';
+import Carousel from './components/Carousel';
+import Footer from './components/Footer';
 
 function SnowField({ count = 1500 }: { count?: number }) {
   const pointsRef = useRef<any>(null);
@@ -271,6 +273,80 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+      {/* Testimonials / Value Carousel Section */}
+      <section className="w-full bg-[#0f0f0f] py-24 flex items-center justify-center">
+        <div className="w-full max-w-5xl px-4">
+          <h3 className="text-3xl md:text-4xl font-extrabold text-center mb-4">What Teams Achieve</h3>
+          <p className="text-base text-center text-gray-300 mb-10">Results and customer quotes rotating every 10 seconds, with manual controls</p>
+          <Carousel
+            ariaLabel="AuditPro results carousel"
+            heightClass="h-64 md:h-72"
+            items={[
+              (
+                <div className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
+                  <div className="space-y-3">
+                    <h4 className="text-2xl font-bold">70% Faster Tag Audits</h4>
+                    <p className="text-gray-300">Automate discovery of pixels, marketing tags, and scripts across your pages. Focus on insights, not manual checks.</p>
+                    <ul className="text-sm text-gray-400 list-disc pl-5">
+                      <li>Auto-detect misfired events</li>
+                      <li>Map vendors and data flows</li>
+                      <li>One-click export</li>
+                    </ul>
+                  </div>
+                  <div className="rounded-xl border border-white/10 bg-black/30 p-6">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl font-extrabold text-purple-500">70%</span>
+                      <span className="text-sm text-gray-400">avg. time saved</span>
+                    </div>
+                    <p className="mt-4 text-sm text-gray-300">“AuditPro cut our audit from days to hours.” — GrowthOps Lead</p>
+                  </div>
+                </div>
+              ),
+              (
+                <div className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
+                  <div className="space-y-3">
+                    <h4 className="text-2xl font-bold">Performance You Can Feel</h4>
+                    <p className="text-gray-300">Pinpoint render-blockers and heavy scripts with prioritized fixes.</p>
+                    <ul className="text-sm text-gray-400 list-disc pl-5">
+                      <li>Script impact scoring</li>
+                      <li>Lazy-load recommendations</li>
+                      <li>Immediate wins highlighted</li>
+                    </ul>
+                  </div>
+                  <div className="rounded-xl border border-white/10 bg-black/30 p-6">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl font-extrabold text-teal-400">+18</span>
+                      <span className="text-sm text-gray-400">Lighthouse points</span>
+                    </div>
+                    <p className="mt-4 text-sm text-gray-300">“Our LCP improved within a week.” — Web Perf Engineer</p>
+                  </div>
+                </div>
+              ),
+              (
+                <div className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
+                  <div className="space-y-3">
+                    <h4 className="text-2xl font-bold">Proof for Stakeholders</h4>
+                    <p className="text-gray-300">Share concise reports with deltas and clear next steps.</p>
+                    <ul className="text-sm text-gray-400 list-disc pl-5">
+                      <li>Executive summaries</li>
+                      <li>Issue owners and status</li>
+                      <li>Audit history and trends</li>
+                    </ul>
+                  </div>
+                  <div className="rounded-xl border border-white/10 bg-black/30 p-6">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl font-extrabold text-orange-500">95%</span>
+                      <span className="text-sm text-gray-400">stakeholder clarity</span>
+                    </div>
+                    <p className="mt-4 text-sm text-gray-300">“The reports make adoption easy.” — Marketing Analytics Director</p>
+                  </div>
+                </div>
+              ),
+            ]}
+          />
+        </div>
+      </section>
+  <Footer />
     </main>
   );
 }
