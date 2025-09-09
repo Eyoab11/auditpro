@@ -87,6 +87,7 @@ export default function Dashboard() {
 
   const [currentJobId, setCurrentJobId] = useState<string | null>(null);
   const [auditStatus, setAuditStatus] = useState<'idle' | 'submitting' | 'pending' | 'completed' | 'failed'>('idle');
+  const [failureReason, setFailureReason] = useState<string | null>(null);
   const [auditData, setAuditData] = useState<AuditDisplayData | null>(null);
   const pollTimer = useRef<NodeJS.Timeout | null>(null);
   const pollStart = useRef<number | null>(null);
@@ -174,17 +175,20 @@ export default function Dashboard() {
     try {
       const res = await apiFetch(`/api/audit/${currentJobId}/status`);
       const status: AuditHistoryItem['status'] | undefined = res?.data?.status;
+      const errMsg: string | undefined = res?.data?.errorMessage;
       if (status === 'completed') {
         await fetchResults(currentJobId);
         if (pollTimer.current) { clearTimeout(pollTimer.current); pollTimer.current = null; }
         return;
       }
       if (status === 'failed') {
+        setFailureReason(errMsg || 'Audit failed');
         setAuditStatus('failed');
         if (pollTimer.current) { clearTimeout(pollTimer.current); pollTimer.current = null; }
         return;
       }
       if (pollStart.current && Date.now() - pollStart.current > 120000) {
+        setFailureReason('Timed out waiting for completion');
         setAuditStatus('failed');
         return;
       }
@@ -206,6 +210,7 @@ export default function Dashboard() {
   const handleAudit = (url: string, jobId?: string) => {
     setAudited(true);
     setAuditData(null);
+    setFailureReason(null);
     if (jobId) {
       setCurrentJobId(jobId);
       setAuditStatus('pending');
@@ -256,7 +261,11 @@ export default function Dashboard() {
             <div className="px-6 pb-8 space-y-8">
               {auditStatus === 'pending' && renderSpinner()}
               {auditStatus === 'failed' && !auditData && (
-                <div className="bg-[#181818] border border-white/10 rounded-xl p-6 text-sm text-red-400">Audit failed or timed out. Please retry.</div>
+                <div className="bg-[#181818] border border-white/10 rounded-xl p-6 text-sm">
+                  <p className="text-red-400 font-medium mb-1">Audit failed</p>
+                  <p className="text-red-300/80">{failureReason || 'Audit failed or timed out. Please retry.'}</p>
+                  {currentJobId && <p className="text-xs text-gray-500 mt-2">Job ID: {currentJobId}</p>}
+                </div>
               )}
               {auditStatus === 'completed' && dataToShow && (
                 <>
