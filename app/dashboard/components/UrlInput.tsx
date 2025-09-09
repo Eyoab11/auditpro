@@ -4,31 +4,30 @@ import { useState } from "react";
 import apiFetch from "../../../utils/api";
 
 interface UrlInputProps {
-  onAudit: (url: string) => void;
+  onAudit: (url: string, jobId?: string) => void; // now passes jobId
 }
 
 export default function UrlInput({ onAudit }: UrlInputProps) {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url) return;
     setLoading(true);
+    setError(null);
     try {
-      // Attempt to submit audit request to backend
       const payload = { url };
-
-      // This will use NEXT_PUBLIC_API_BASE_URL if set, otherwise same-origin
-      await apiFetch('/api/audit/submit', { method: 'POST', body: JSON.stringify(payload) });
-
-      // Notify parent UI that audit started
-      onAudit(url);
+      const res = await apiFetch('/api/audit/submit', { method: 'POST', body: JSON.stringify(payload) });
+      // Expected shape: { success: true, data: { jobId, status, msg } }
+      const jobId = res?.data?.jobId || res?.jobId;
+      onAudit(url, jobId);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
+      setError(message || 'Failed to start audit');
       console.error('Failed to start audit:', message);
-      // Still notify parent so UI can react, but keep logs for debugging
-      onAudit(url);
+      onAudit(url); // still signal; dashboard will mark as failed if no jobId
     } finally {
       setLoading(false);
     }
@@ -77,11 +76,12 @@ export default function UrlInput({ onAudit }: UrlInputProps) {
                 >
                   <path fillRule="evenodd" d="M10.5 3a7.5 7.5 0 1 0 4.773 13.39l3.669 3.668a.75.75 0 1 0 1.06-1.06l-3.668-3.67A7.5 7.5 0 0 0 10.5 3Zm-6 7.5a6 6 0 1 1 12 0 6 6 0 0 1-12 0Z" clipRule="evenodd" />
                 </svg>
-                <span className="whitespace-nowrap">{loading ? "Auditing..." : "Audit Now"}</span>
+                <span className="whitespace-nowrap">{loading ? "Submitting..." : "Audit Now"}</span>
               </button>
             </div>
           </div>
         </form>
+        {error && <p className="mt-4 text-sm text-red-400" role="alert">{error}</p>}
       </div>
     </section>
   );
