@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import RequireAuth from "../components/RequireAuth";
+import { useAuth } from "../context/AuthContext";
+import apiFetch from "../../utils/api";
 
 interface Report {
   id: string;
@@ -11,18 +14,35 @@ interface Report {
   score: number;
 }
 
-const mockReports: Report[] = [
-  { id: "1", date: "2025-09-05", url: "https://example.com", score: 78 },
-  { id: "2", date: "2025-09-04", url: "https://testsite.com", score: 85 },
-  { id: "3", date: "2025-09-03", url: "https://mysite.org", score: 62 },
-  { id: "4", date: "2025-09-02", url: "https://demo.net", score: 91 },
-];
+const mockReports: Report[] = [];
 
 export default function ReportHistoryPage() {
-  const [reports] = useState<Report[]>(mockReports);
+  const [reports, setReports] = useState<Report[]>(mockReports);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await apiFetch('/api/audit');
+        if (res?.data?.items) {
+          const mapped: Report[] = res.data.items.map((it: any) => ({
+            id: it.jobId,
+            date: new Date(it.createdAt || it.updatedAt).toISOString().split('T')[0],
+            url: it.url,
+            score: it.score ?? 0
+          }));
+          setReports(mapped);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    load();
+  }, []);
 
   return (
+    <RequireAuth>
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Navbar */}
       <nav className="flex items-center justify-between px-8 py-6 shadow-sm bg-[#181818] border-b border-white/10 relative">
@@ -72,10 +92,11 @@ export default function ReportHistoryPage() {
 
         {/* Desktop Right Section */}
         <div className="hidden md:flex items-center gap-4">
-          <span className="text-gray-400">Welcome, User</span>
+          <span className="text-gray-400">Welcome, {user?.name || 'User'}</span>
           <Link href="/dashboard" className="px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition">
             New Audit
           </Link>
+          <button onClick={logout} className="text-sm text-purple-400 hover:text-purple-300">Logout</button>
         </div>
 
         {/* Mobile Menu Overlay */}
@@ -104,7 +125,7 @@ export default function ReportHistoryPage() {
                 Settings
               </Link>
               <div className="pt-4 border-t border-white/10">
-                <span className="block py-2 text-gray-400">Welcome, User</span>
+                <span className="block py-2 text-gray-400">Welcome, {user?.name || 'User'}</span>
                 <Link 
                   href="/dashboard" 
                   className="inline-block mt-2 px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition"
@@ -112,6 +133,7 @@ export default function ReportHistoryPage() {
                 >
                   New Audit
                 </Link>
+                <button onClick={logout} className="mt-2 text-sm text-purple-400 hover:text-purple-300">Logout</button>
               </div>
             </div>
           </div>
@@ -152,5 +174,6 @@ export default function ReportHistoryPage() {
         </div>
       </main>
     </div>
+    </RequireAuth>
   );
 }

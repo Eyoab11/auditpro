@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -10,12 +11,21 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
+  const { register, loading } = useAuth();
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // No actual auth, just visual
-    console.log("Signup attempted with:", { name, email, password, confirmPassword });
-    router.push("/dashboard");
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    try {
+      await register(name, email, password);
+      router.push('/dashboard');
+    } catch (err) {
+      console.error(err);
+      alert((err as Error).message || 'Signup failed');
+    }
   };
 
   return (
@@ -81,9 +91,10 @@ export default function SignupPage() {
           </div>
           <button
             type="submit"
-            className="w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold transition"
+            disabled={loading}
+            className="w-full py-3 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 rounded-lg font-semibold transition"
           >
-            Create Account
+            {loading ? 'Creating...' : 'Create Account'}
           </button>
         </form>
         <div className="mt-6 text-center">
