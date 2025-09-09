@@ -23,10 +23,11 @@ export async function apiFetch(path: string, opts: RequestInit = {}) {
   });
 
   if (!res.ok) {
-  let errorPayload: any = undefined;
-  try { errorPayload = await res.json(); } catch { /* ignore */ }
-  const message = errorPayload?.error || errorPayload?.message || res.statusText;
-  throw new Error(message);
+    type ErrorShape = { error?: string; message?: string } | undefined;
+    let errorPayload: ErrorShape;
+    try { errorPayload = await res.json(); } catch { errorPayload = undefined; }
+    const message = (errorPayload && (errorPayload.error || errorPayload.message)) || res.statusText;
+    throw new Error(message);
   }
 
   // Try to parse JSON, but return raw text if JSON fails

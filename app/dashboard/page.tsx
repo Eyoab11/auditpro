@@ -14,16 +14,28 @@ import { useAuth } from "../context/AuthContext";
 import RequireAuth from "../components/RequireAuth";
 import apiFetch from "../../utils/api";
 
+interface AuditHistoryItem {
+  jobId: string;
+  url: string;
+  status: 'pending' | 'scanning' | 'analyzing' | 'completed' | 'failed';
+  createdAt?: string;
+  updatedAt?: string;
+  score?: number;
+}
+
 export default function Dashboard() {
   const [audited, setAudited] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
-  const [history, setHistory] = useState<any[]>([]);
+  const [history, setHistory] = useState<AuditHistoryItem[]>([]);
 
   async function loadHistory() {
     try {
       const res = await apiFetch('/api/audit');
-      if (res?.data?.items) setHistory(res.data.items);
+      if (res?.data?.items) {
+        const items: AuditHistoryItem[] = res.data.items;
+        setHistory(items);
+      }
     } catch (e) {
       console.error('Failed to load history', e);
     }

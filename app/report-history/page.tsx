@@ -7,6 +7,9 @@ import RequireAuth from "../components/RequireAuth";
 import { useAuth } from "../context/AuthContext";
 import apiFetch from "../../utils/api";
 
+type AuditStatus = 'pending' | 'scanning' | 'analyzing' | 'completed' | 'failed';
+interface AuditHistoryItem { jobId: string; url: string; status: AuditStatus; createdAt?: string; updatedAt?: string; score?: number; }
+
 interface Report {
   id: string;
   date: string;
@@ -26,9 +29,10 @@ export default function ReportHistoryPage() {
       try {
         const res = await apiFetch('/api/audit');
         if (res?.data?.items) {
-          const mapped: Report[] = res.data.items.map((it: any) => ({
+          const items: AuditHistoryItem[] = res.data.items;
+          const mapped: Report[] = items.map((it) => ({
             id: it.jobId,
-            date: new Date(it.createdAt || it.updatedAt).toISOString().split('T')[0],
+            date: new Date(it.createdAt || it.updatedAt || Date.now()).toISOString().split('T')[0],
             url: it.url,
             score: it.score ?? 0
           }));
