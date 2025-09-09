@@ -34,8 +34,9 @@ export default function PdfDownloadButton({ jobId, disabled }: Props) {
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
-    } catch (e: any) {
-      setError(e.message || 'Failed to download PDF');
+    } catch (e) {
+      if (e instanceof Error) setError(e.message || 'Failed to download PDF');
+      else setError('Failed to download PDF');
     } finally {
       setLoading(false);
     }

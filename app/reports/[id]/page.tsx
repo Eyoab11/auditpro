@@ -11,11 +11,19 @@ import RecommendationsList from "../../dashboard/components/RecommendationsList"
 import PdfDownloadButton from "../../dashboard/components/PdfDownloadButton";
 import apiFetch from "@/utils/api";
 
+interface PerformanceMetricSeries { current: string; data: number[]; }
+interface PerformanceMetricsUI {
+  loadTime: PerformanceMetricSeries;
+  firstContentfulPaint: PerformanceMetricSeries;
+  largestContentfulPaint: PerformanceMetricSeries;
+}
+interface ProcessedTagUI { name: string; status: string; icon: string }
+interface RecommendationUI { type: string; title: string; description: string; impact: string }
 interface LoadedReport {
   healthScore: number;
-  detectedTags: { name: string; status: string; icon: string }[];
-  performanceMetrics: any;
-  recommendations: { type: string; title: string; description: string; impact: string }[];
+  detectedTags: ProcessedTagUI[];
+  performanceMetrics: PerformanceMetricsUI;
+  recommendations: RecommendationUI[];
   url: string;
   date: string;
 }
@@ -36,25 +44,27 @@ export default function ReportDetailPage() {
         setLoading(true);
         const res = await apiFetch(`/api/audit/${reportId}/results`);
         // Shape: { data: { results: { healthScore, analysis, ... } } }
-        const data = res.data?.results || res.results || res.data; // handle different shapes
+  const data: any = res.data?.results || res.results || res.data; // shape from API, typed as any at boundary
         if (!data) throw new Error('No results');
         const healthScore = data.healthScore || data.analysis?.summary?.healthScore || 0;
-        const tags = (data.analysis?.processedTags || data.tags || []).map((t: any) => ({
-          name: t.name,
+        const rawTags: any[] = data.analysis?.processedTags || data.tags || [];
+        const tags: ProcessedTagUI[] = rawTags.map(t => ({
+          name: String(t.name || ''),
           status: t.status === 'ok' ? 'OK' : (t.status === 'warning' ? 'Warning' : 'Info'),
-          icon: t.name.includes('Google') ? 'FaGoogle' : t.name.includes('Facebook') || t.name.includes('Meta') ? 'FaFacebook' : t.name.includes('Twitter') ? 'FaTwitter' : 'FaLinkedin'
+          icon: String(t.name || '').includes('Google') ? 'FaGoogle' : (String(t.name || '').includes('Facebook') || String(t.name || '').includes('Meta')) ? 'FaFacebook' : String(t.name || '').includes('Twitter') ? 'FaTwitter' : 'FaLinkedin'
         }));
         const perf = data.analysis?.performanceScores || data.performance || {};
-        const perfMetrics = {
+        const perfMetrics: PerformanceMetricsUI = {
           loadTime: { current: (perf.loadTimeMs ? (perf.loadTimeMs/1000).toFixed(1)+'s' : '0s'), data: [] },
           firstContentfulPaint: { current: perf.firstContentfulPaintMs ? (perf.firstContentfulPaintMs/1000).toFixed(1)+'s' : '—', data: [] },
           largestContentfulPaint: { current: perf.largestContentfulPaintMs ? (perf.largestContentfulPaintMs/1000).toFixed(1)+'s' : '—', data: [] }
         };
-  const recommendations: LoadedReport['recommendations'] = (data.analysis?.findings || []).slice(0,20).map((f: any) => ({
+        const rawFindings: any[] = (data.analysis?.findings || []).slice(0,20);
+        const recommendations: RecommendationUI[] = rawFindings.map(f => ({
           type: f.type === 'issue' ? 'issue' : (f.type === 'warning' ? 'warning' : 'info'),
-          title: f.title,
-          description: f.description,
-          impact: (f.severity?.toLowerCase() === 'high') ? 'High' : (f.severity?.toLowerCase() === 'low') ? 'Low' : (f.severity?.toLowerCase() === 'medium') ? 'Medium' : 'Medium'
+          title: String(f.title || ''),
+          description: String(f.description || ''),
+          impact: (typeof f.severity === 'string' && f.severity.toLowerCase() === 'high') ? 'High' : (typeof f.severity === 'string' && f.severity.toLowerCase() === 'low') ? 'Low' : (typeof f.severity === 'string' && f.severity.toLowerCase() === 'medium') ? 'Medium' : 'Medium'
         }));
         if (!cancelled) {
           setReport({
@@ -66,8 +76,8 @@ export default function ReportDetailPage() {
             date: new Date(res.data?.updatedAt || res.data?.createdAt || Date.now()).toISOString().split('T')[0]
           });
         }
-      } catch (e: any) {
-        if (!cancelled) setError(e.message || 'Failed to load report');
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load report');
       } finally {
         if (!cancelled) setLoading(false);
       }
