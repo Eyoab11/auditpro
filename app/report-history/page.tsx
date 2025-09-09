@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import RequireAuth from "../components/RequireAuth";
 import { useAuth } from "../context/AuthContext";
 import apiFetch from "../../utils/api";
+import PdfDownloadButton from "../dashboard/components/PdfDownloadButton";
 
 type AuditStatus = 'pending' | 'scanning' | 'analyzing' | 'completed' | 'failed';
 interface AuditHistoryItem { jobId: string; url: string; status: AuditStatus; createdAt?: string; updatedAt?: string; score?: number; }
@@ -165,12 +166,15 @@ export default function ReportHistoryPage() {
                     </div>
                     <p className="text-white font-medium">{report.url}</p>
                   </div>
-                  <Link
-                    href={`/reports/${report.id}`}
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition text-sm font-medium"
-                  >
-                    View Report
-                  </Link>
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href={`/reports/${report.id}`}
+                      className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition text-sm font-medium"
+                    >
+                      View Report
+                    </Link>
+                    <PdfDownloadButton jobId={report.id} disabled={report.score === 0} />
+                  </div>
                 </div>
               </div>
             ))}

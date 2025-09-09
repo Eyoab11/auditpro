@@ -8,7 +8,6 @@ import HealthScoreCard from "./components/HealthScoreCard";
 import DetectedTagsList from "./components/DetectedTagsList";
 import PerformanceCharts from "./components/PerformanceCharts";
 import RecommendationsList from "./components/RecommendationsList";
-import PdfDownloadButton from "./components/PdfDownloadButton";
 // Removed mockData import – no longer used
 import { useAuth } from "../context/AuthContext";
 import RequireAuth from "../components/RequireAuth";
@@ -248,7 +247,6 @@ export default function Dashboard() {
         </ul>
         <div className="hidden md:flex items-center gap-4">
           <span className="text-gray-400">Welcome, {user?.name || 'User'}</span>
-          <PdfDownloadButton jobId={(history.find(h=>h.status==='completed')||history[0]||{jobId:''}).jobId} disabled={history.length===0} />
           <button onClick={logout} className="text-sm text-purple-400 hover:text-purple-300">Logout</button>
         </div>
       </nav>
