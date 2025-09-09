@@ -9,7 +9,7 @@ import DetectedTagsList from "./components/DetectedTagsList";
 import PerformanceCharts from "./components/PerformanceCharts";
 import RecommendationsList from "./components/RecommendationsList";
 import PdfDownloadButton from "./components/PdfDownloadButton";
-import mockData from "./mockAuditData.json";
+import mockData from "./mockAuditData.json"; // fallback until real results fetched
 import { useAuth } from "../context/AuthContext";
 import RequireAuth from "../components/RequireAuth";
 import apiFetch from "../../utils/api";
@@ -101,7 +101,7 @@ export default function Dashboard() {
         {/* Desktop Right Section */}
         <div className="hidden md:flex items-center gap-4">
           <span className="text-gray-400">Welcome, {user?.name || 'User'}</span>
-          <PdfDownloadButton />
+          <PdfDownloadButton jobId={(history.find(h=>h.status==='completed')||history[0]||{jobId:''}).jobId} disabled={history.length===0} />
           <button onClick={logout} className="text-sm text-purple-400 hover:text-purple-300">Logout</button>
         </div>
 
@@ -133,7 +133,7 @@ export default function Dashboard() {
               <div className="pt-4 border-t border-white/10">
                 <span className="block py-2 text-gray-400">Welcome, {user?.name || 'User'}</span>
                 <div className="mt-2">
-                  <PdfDownloadButton />
+                  <PdfDownloadButton jobId={(history.find(h=>h.status==='completed')||history[0]||{jobId:''}).jobId} disabled={history.length===0} />
                 </div>
                 <button onClick={logout} className="mt-2 text-sm text-purple-400 hover:text-purple-300">Logout</button>
               </div>
@@ -151,7 +151,7 @@ export default function Dashboard() {
           {audited && (
             <div className="px-6 pb-8 space-y-8">
               {/* Health Score */}
-              <HealthScoreCard score={mockData.healthScore} />
+              <HealthScoreCard score={(history.find(h=>h.status==='completed' && typeof h.score==='number' && h.score>0)?.score) || mockData.healthScore} />
 
               {/* Detected Tags and Performance */}
               <div className="grid lg:grid-cols-2 gap-8">

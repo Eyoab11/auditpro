@@ -1,29 +1,57 @@
 "use client";
+import { useState } from "react";
+import { useAuth } from "@/app/context/AuthContext";
 
-export default function PdfDownloadButton() {
-  const handleDownload = () => {
-    // Simulate download by opening mock data in new tab
-    const data = {
-      healthScore: 78,
-      detectedTags: [
-        { name: "Google Analytics", status: "OK" },
-        { name: "Facebook Pixel", status: "Warning" },
-      ],
-      recommendations: [
-        { title: "Optimize Images", description: "Compress images to reduce load time." },
-      ],
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank");
+interface Props { jobId: string; disabled?: boolean; }
+
+export default function PdfDownloadButton({ jobId, disabled }: Props) {
+  const { token } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleDownload = async () => {
+    if (!jobId) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const base = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+      const res = await fetch(`${base}/api/audit/${jobId}/pdf`, {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        credentials: 'include'
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || res.statusText);
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `audit-${jobId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e: any) {
+      setError(e.message || 'Failed to download PDF');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <button
-      onClick={handleDownload}
-      className="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold transition text-white"
-    >
-      Download PDF Report
-    </button>
+    <div className="flex flex-col gap-2">
+      <button
+        onClick={handleDownload}
+        disabled={loading || disabled || !token}
+        className={`px-6 py-3 rounded-lg font-semibold transition text-white ${loading ? 'bg-purple-400 cursor-wait' : 'bg-purple-600 hover:bg-purple-700'} disabled:opacity-50`}
+      >
+        {loading ? 'Generating...' : 'Download PDF Report'}
+      </button>
+      {error && <span className="text-xs text-red-400">{error}</span>}
+      {!token && <span className="text-xs text-gray-400">Login required</span>}
+    </div>
   );
 }

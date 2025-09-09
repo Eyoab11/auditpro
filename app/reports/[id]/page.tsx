@@ -3,57 +3,86 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import HealthScoreCard from "../../dashboard/components/HealthScoreCard";
 import DetectedTagsList from "../../dashboard/components/DetectedTagsList";
 import PerformanceCharts from "../../dashboard/components/PerformanceCharts";
 import RecommendationsList from "../../dashboard/components/RecommendationsList";
 import PdfDownloadButton from "../../dashboard/components/PdfDownloadButton";
+import apiFetch from "@/utils/api";
 
-// Mock data for different reports
-const mockReports = {
-  "1": {
-    healthScore: 78,
-    detectedTags: [
-      { name: "Google Analytics", status: "OK", icon: "FaGoogle" },
-      { name: "Facebook Pixel", status: "Warning", icon: "FaFacebook" },
-    ],
-    performanceMetrics: {
-      loadTime: { current: "2.8s", data: [3.2, 3.0, 2.9, 2.8, 2.7, 2.6, 2.5] },
-      firstContentfulPaint: { current: "1.5s", data: [2.0, 1.9, 1.8, 1.7, 1.6, 1.5, 1.4] },
-      largestContentfulPaint: { current: "3.2s", data: [4.0, 3.8, 3.6, 3.4, 3.2, 3.0, 2.8] },
-    },
-    recommendations: [
-      { type: "warning", title: "Optimize Images", description: "Compress images to reduce load time.", impact: "High" },
-    ],
-    url: "https://example.com",
-    date: "2025-09-05",
-  },
-  "2": {
-    healthScore: 85,
-    detectedTags: [
-      { name: "Google Analytics", status: "OK", icon: "FaGoogle" },
-      { name: "Twitter Conversion", status: "OK", icon: "FaTwitter" },
-    ],
-    performanceMetrics: {
-      loadTime: { current: "2.2s", data: [2.8, 2.6, 2.4, 2.3, 2.2, 2.1, 2.0] },
-      firstContentfulPaint: { current: "1.2s", data: [1.8, 1.6, 1.5, 1.4, 1.3, 1.2, 1.1] },
-      largestContentfulPaint: { current: "2.8s", data: [3.5, 3.2, 3.0, 2.9, 2.8, 2.7, 2.6] },
-    },
-    recommendations: [
-      { type: "issue", title: "Fix Broken Links", description: "Several links are returning 404 errors.", impact: "Medium" },
-    ],
-    url: "https://testsite.com",
-    date: "2025-09-04",
-  },
-  // Add more reports as needed
-};
+interface LoadedReport {
+  healthScore: number;
+  detectedTags: { name: string; status: string; icon: string }[];
+  performanceMetrics: any;
+  recommendations: { type: string; title: string; description: string; impact: string }[];
+  url: string;
+  date: string;
+}
 
 export default function ReportDetailPage() {
   const params = useParams();
   const reportId = params.id as string;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const report = mockReports[reportId as keyof typeof mockReports];
+  const [report, setReport] = useState<LoadedReport | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Load real audit results
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        setLoading(true);
+        const res = await apiFetch(`/api/audit/${reportId}/results`);
+        // Shape: { data: { results: { healthScore, analysis, ... } } }
+        const data = res.data?.results || res.results || res.data; // handle different shapes
+        if (!data) throw new Error('No results');
+        const healthScore = data.healthScore || data.analysis?.summary?.healthScore || 0;
+        const tags = (data.analysis?.processedTags || data.tags || []).map((t: any) => ({
+          name: t.name,
+          status: t.status === 'ok' ? 'OK' : (t.status === 'warning' ? 'Warning' : 'Info'),
+          icon: t.name.includes('Google') ? 'FaGoogle' : t.name.includes('Facebook') || t.name.includes('Meta') ? 'FaFacebook' : t.name.includes('Twitter') ? 'FaTwitter' : 'FaLinkedin'
+        }));
+        const perf = data.analysis?.performanceScores || data.performance || {};
+        const perfMetrics = {
+          loadTime: { current: (perf.loadTimeMs ? (perf.loadTimeMs/1000).toFixed(1)+'s' : '0s'), data: [] },
+          firstContentfulPaint: { current: perf.firstContentfulPaintMs ? (perf.firstContentfulPaintMs/1000).toFixed(1)+'s' : '—', data: [] },
+          largestContentfulPaint: { current: perf.largestContentfulPaintMs ? (perf.largestContentfulPaintMs/1000).toFixed(1)+'s' : '—', data: [] }
+        };
+  const recommendations: LoadedReport['recommendations'] = (data.analysis?.findings || []).slice(0,20).map((f: any) => ({
+          type: f.type === 'issue' ? 'issue' : (f.type === 'warning' ? 'warning' : 'info'),
+          title: f.title,
+          description: f.description,
+          impact: (f.severity?.toLowerCase() === 'high') ? 'High' : (f.severity?.toLowerCase() === 'low') ? 'Low' : (f.severity?.toLowerCase() === 'medium') ? 'Medium' : 'Medium'
+        }));
+        if (!cancelled) {
+          setReport({
+            healthScore: healthScore || 0,
+            detectedTags: tags,
+            performanceMetrics: perfMetrics,
+            recommendations,
+            url: data.summary?.url || data.summary?.processedUrl || res.data?.url || 'Unknown',
+            date: new Date(res.data?.updatedAt || res.data?.createdAt || Date.now()).toISOString().split('T')[0]
+          });
+        }
+      } catch (e: any) {
+        if (!cancelled) setError(e.message || 'Failed to load report');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [reportId]);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center text-white">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-400">{error}</div>;
+  }
 
   if (!report) {
     return (
@@ -119,7 +148,7 @@ export default function ReportDetailPage() {
         {/* Desktop Right Section */}
         <div className="hidden md:flex items-center gap-4">
           <span className="text-gray-400">Welcome, User</span>
-          <PdfDownloadButton />
+          <PdfDownloadButton jobId={reportId} />
           <Link href="/report-history" className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition">
             Back to History
           </Link>
@@ -153,7 +182,7 @@ export default function ReportDetailPage() {
               <div className="pt-4 border-t border-white/10">
                 <span className="block py-2 text-gray-400">Welcome, User</span>
                 <div className="mt-2 space-y-2">
-                  <PdfDownloadButton />
+                  <PdfDownloadButton jobId={reportId} />
                   <Link 
                     href="/report-history" 
                     className="inline-block px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition"
@@ -172,7 +201,7 @@ export default function ReportDetailPage() {
       <main className="px-6 py-8">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Health Score */}
-          <HealthScoreCard score={report.healthScore} />
+          <HealthScoreCard score={report.healthScore || 0} />
 
           {/* Detected Tags and Performance */}
           <div className="grid lg:grid-cols-2 gap-8">
