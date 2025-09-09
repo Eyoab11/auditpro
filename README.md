@@ -226,7 +226,30 @@ auditpro/
 }
 ```
 
-## 🚀 Deployment
+## � Backend Integration
+
+Set the backend base URL so the frontend can reach the API.
+
+- For local development, copy `.env.example` -> `.env.local` and set:
+
+```
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
+```
+
+- In production (Render), set `NEXT_PUBLIC_API_BASE_URL` to your backend URL (for example `https://auditpro-backend.onrender.com`) in the Render service environment.
+
+Usage example (helper): `utils/api.ts` exposes `apiFetch(path, opts)` which will prefix requests with the `NEXT_PUBLIC_API_BASE_URL` when set. Use it like:
+
+```ts
+import apiFetch from '../utils/api';
+
+const res = await apiFetch('/api/audit', { method: 'POST', body: JSON.stringify({ url }) });
+```
+
+This ensures client requests go to the deployed backend rather than same-origin.
+
+
+## �🚀 Deployment
 
 ### Vercel (Recommended)
 1. Push to GitHub

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import apiFetch from "../../../utils/api";
 
 interface UrlInputProps {
   onAudit: (url: string) => void;
@@ -14,11 +15,22 @@ export default function UrlInput({ onAudit }: UrlInputProps) {
     e.preventDefault();
     if (!url) return;
     setLoading(true);
-    // Simulate loading
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      // Attempt to submit audit request to backend
+      const payload = { url };
+
+      // This will use NEXT_PUBLIC_API_BASE_URL if set, otherwise same-origin
+      await apiFetch('/api/audit/submit', { method: 'POST', body: JSON.stringify(payload) });
+
+      // Notify parent UI that audit started
       onAudit(url);
-    }, 3000);
+    } catch (err: any) {
+      console.error('Failed to start audit:', err.message || err);
+      // Still notify parent so UI can react, but keep logs for debugging
+      onAudit(url);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
