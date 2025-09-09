@@ -28,6 +28,21 @@ interface LoadedReport {
   date: string;
 }
 
+// Backend response shapes (partial, only what we consume)
+interface BackendPerformanceScores {
+  loadTimeMs?: number; firstContentfulPaintMs?: number; largestContentfulPaintMs?: number; cumulativeLayoutShift?: number;
+}
+interface BackendProcessedTag { name?: string; status?: string; }
+interface BackendFinding { type?: string; title?: string; description?: string; severity?: string; }
+interface BackendAnalysis { processedTags?: BackendProcessedTag[]; findings?: BackendFinding[]; performanceScores?: BackendPerformanceScores; summary?: { healthScore?: number }; }
+interface BackendResults {
+  healthScore?: number;
+  analysis?: BackendAnalysis;
+  tags?: BackendProcessedTag[];
+  performance?: BackendPerformanceScores;
+  summary?: { url?: string; processedUrl?: string };
+}
+
 export default function ReportDetailPage() {
   const params = useParams();
   const reportId = params.id as string;
@@ -42,38 +57,65 @@ export default function ReportDetailPage() {
     async function load() {
       try {
         setLoading(true);
-        const res = await apiFetch(`/api/audit/${reportId}/results`);
-        // Shape: { data: { results: { healthScore, analysis, ... } } }
-  const data: any = res.data?.results || res.results || res.data; // shape from API, typed as any at boundary
-        if (!data) throw new Error('No results');
+        const resUnknown = await apiFetch(`/api/audit/${reportId}/results`) as unknown;
+        type PossibleResponse = { data?: unknown; results?: unknown } | BackendResults | Record<string, unknown>;
+        const root = resUnknown as PossibleResponse;
+        const isObject = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null;
+        let candidateUnknown: unknown = undefined;
+        if (isObject(root)) {
+          // Prefer data.results
+          const dataVal = (root as Record<string, unknown>)['data'];
+          if (isObject(dataVal)) {
+            const possibleResults = dataVal['results'];
+            if (possibleResults !== undefined) candidateUnknown = possibleResults;
+          }
+          // Fallback to root.results
+          if (candidateUnknown === undefined && 'results' in root) {
+            candidateUnknown = (root as Record<string, unknown>)['results'];
+          }
+          // Fallback to data object itself
+            if (candidateUnknown === undefined && dataVal !== undefined) {
+            candidateUnknown = dataVal;
+          }
+          // Final fallback root
+          if (candidateUnknown === undefined) candidateUnknown = root;
+        }
+        if (!candidateUnknown || typeof candidateUnknown !== 'object') throw new Error('No results');
+        const data = candidateUnknown as BackendResults;
         const healthScore = data.healthScore || data.analysis?.summary?.healthScore || 0;
-        const rawTags: any[] = data.analysis?.processedTags || data.tags || [];
-        const tags: ProcessedTagUI[] = rawTags.map(t => ({
-          name: String(t.name || ''),
-          status: t.status === 'ok' ? 'OK' : (t.status === 'warning' ? 'Warning' : 'Info'),
-          icon: String(t.name || '').includes('Google') ? 'FaGoogle' : (String(t.name || '').includes('Facebook') || String(t.name || '').includes('Meta')) ? 'FaFacebook' : String(t.name || '').includes('Twitter') ? 'FaTwitter' : 'FaLinkedin'
-        }));
-        const perf = data.analysis?.performanceScores || data.performance || {};
+        const rawTags = (data.analysis?.processedTags || data.tags || []) as BackendProcessedTag[];
+        const tags: ProcessedTagUI[] = rawTags.map(t => {
+          const name = String(t.name || '');
+            return {
+            name,
+            status: t.status === 'ok' ? 'OK' : (t.status === 'warning' ? 'Warning' : 'Info'),
+            icon: name.includes('Google') ? 'FaGoogle' : (name.includes('Facebook') || name.includes('Meta')) ? 'FaFacebook' : name.includes('Twitter') ? 'FaTwitter' : 'FaLinkedin'
+          };
+        });
+        const perf = (data.analysis?.performanceScores || data.performance || {}) as BackendPerformanceScores;
         const perfMetrics: PerformanceMetricsUI = {
           loadTime: { current: (perf.loadTimeMs ? (perf.loadTimeMs/1000).toFixed(1)+'s' : '0s'), data: [] },
           firstContentfulPaint: { current: perf.firstContentfulPaintMs ? (perf.firstContentfulPaintMs/1000).toFixed(1)+'s' : '—', data: [] },
           largestContentfulPaint: { current: perf.largestContentfulPaintMs ? (perf.largestContentfulPaintMs/1000).toFixed(1)+'s' : '—', data: [] }
         };
-        const rawFindings: any[] = (data.analysis?.findings || []).slice(0,20);
-        const recommendations: RecommendationUI[] = rawFindings.map(f => ({
-          type: f.type === 'issue' ? 'issue' : (f.type === 'warning' ? 'warning' : 'info'),
-          title: String(f.title || ''),
-          description: String(f.description || ''),
-          impact: (typeof f.severity === 'string' && f.severity.toLowerCase() === 'high') ? 'High' : (typeof f.severity === 'string' && f.severity.toLowerCase() === 'low') ? 'Low' : (typeof f.severity === 'string' && f.severity.toLowerCase() === 'medium') ? 'Medium' : 'Medium'
-        }));
+        const rawFindings = (data.analysis?.findings || []).slice(0,20) as BackendFinding[];
+        const recommendations: RecommendationUI[] = rawFindings.map(f => {
+          const sev = (f.severity || '').toLowerCase();
+          return {
+            type: f.type === 'issue' ? 'issue' : (f.type === 'warning' ? 'warning' : 'info'),
+            title: String(f.title || ''),
+            description: String(f.description || ''),
+            impact: sev === 'high' ? 'High' : sev === 'low' ? 'Low' : sev === 'medium' ? 'Medium' : 'Medium'
+          };
+        });
         if (!cancelled) {
           setReport({
             healthScore: healthScore || 0,
             detectedTags: tags,
             performanceMetrics: perfMetrics,
             recommendations,
-            url: data.summary?.url || data.summary?.processedUrl || res.data?.url || 'Unknown',
-            date: new Date(res.data?.updatedAt || res.data?.createdAt || Date.now()).toISOString().split('T')[0]
+            url: data.summary?.url || data.summary?.processedUrl || 'Unknown',
+            date: new Date().toISOString().split('T')[0]
           });
         }
       } catch (e) {
