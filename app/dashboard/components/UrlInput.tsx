@@ -24,8 +24,9 @@ export default function UrlInput({ onAudit }: UrlInputProps) {
 
       // Notify parent UI that audit started
       onAudit(url);
-    } catch (err: any) {
-      console.error('Failed to start audit:', err.message || err);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error('Failed to start audit:', message);
       // Still notify parent so UI can react, but keep logs for debugging
       onAudit(url);
     } finally {

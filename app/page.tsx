@@ -10,7 +10,9 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 function SnowField({ count = 1500 }: { count?: number }) {
-  const pointsRef = useRef<any>(null);
+  // Use a loose type to avoid dependency on three type import here while still avoiding 'any'
+  // Points from three.js extends Object3D; we only access geometry safely.
+  const pointsRef = useRef<{ geometry?: { attributes: { position: { array: unknown; needsUpdate: boolean } } } } | null>(null);
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -281,7 +283,7 @@ export default function Home() {
               </span>
             </div>
             <span className="text-xl font-bold text-white mb-2 text-center">Performance Optimization</span>
-            <p className="text-sm text-gray-400 text-center mb-6">Identify bottlenecks and receive actionable recommendations to boost your website's speed and user experience.</p>
+            <p className="text-sm text-gray-400 text-center mb-6">Identify bottlenecks and receive actionable recommendations to boost your website&apos;s speed and user experience.</p>
             <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-teal-400 text-teal-400 font-medium hover:bg-teal-900/20 transition">
               Learn More
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
@@ -373,7 +375,7 @@ export default function Home() {
             heightClass="h-64 md:h-72"
             items={[
               (
-                <div className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
+                <div key="carousel-1" className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
                   <div className="space-y-3">
                     <h4 className="text-2xl font-bold">70% Faster Tag Audits</h4>
                     <p className="text-gray-300">Automate discovery of pixels, marketing tags, and scripts across your pages. Focus on insights, not manual checks.</p>
@@ -393,7 +395,7 @@ export default function Home() {
                 </div>
               ),
               (
-                <div className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
+                <div key="carousel-2" className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
                   <div className="space-y-3">
                     <h4 className="text-2xl font-bold">Performance You Can Feel</h4>
                     <p className="text-gray-300">Pinpoint render-blockers and heavy scripts with prioritized fixes.</p>
@@ -413,7 +415,7 @@ export default function Home() {
                 </div>
               ),
               (
-                <div className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
+                <div key="carousel-3" className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
                   <div className="space-y-3">
                     <h4 className="text-2xl font-bold">Proof for Stakeholders</h4>
                     <p className="text-gray-300">Share concise reports with deltas and clear next steps.</p>
