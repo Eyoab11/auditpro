@@ -44,7 +44,8 @@ export default function PerformanceCharts({ metrics }: PerformanceChartsProps) {
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
           <XAxis dataKey="day" stroke="#9ca3af" />
-          <YAxis stroke="#9ca3af" />
+          {/* Ensure domain isn't collapsed when values are equal/zero */}
+          <YAxis stroke="#9ca3af" domain={[0, 'dataMax + 1']} allowDecimals />
           <Tooltip
             contentStyle={{
               backgroundColor: "#181818",
@@ -52,9 +53,9 @@ export default function PerformanceCharts({ metrics }: PerformanceChartsProps) {
               borderRadius: "8px",
             }}
           />
-          <Line type="monotone" dataKey="loadTime" stroke="#a855f7" strokeWidth={2} />
-          <Line type="monotone" dataKey="fcp" stroke="#14b8a6" strokeWidth={2} />
-          <Line type="monotone" dataKey="lcp" stroke="#f97316" strokeWidth={2} />
+          <Line type="monotone" dataKey="loadTime" stroke="#a855f7" strokeWidth={2} dot={{ r: 2 }} />
+          <Line type="monotone" dataKey="fcp" stroke="#14b8a6" strokeWidth={2} dot={{ r: 2 }} />
+          <Line type="monotone" dataKey="lcp" stroke="#f97316" strokeWidth={2} dot={{ r: 2 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>

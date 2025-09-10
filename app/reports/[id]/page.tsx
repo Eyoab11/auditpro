@@ -93,10 +93,24 @@ export default function ReportDetailPage() {
           };
         });
         const perf = (data.analysis?.performanceScores || data.performance || {}) as BackendPerformanceScores;
+        // Ensure we provide at least a couple of data points for charts so lines render
+        const loadTimeMs = perf.loadTimeMs || 0;
+        const fcpMs = perf.firstContentfulPaintMs || 0;
+        const lcpMs = perf.largestContentfulPaintMs || 0;
+        const toSecNum = (ms: number) => Number(((ms || 0) / 1000).toFixed(1));
         const perfMetrics: PerformanceMetricsUI = {
-          loadTime: { current: (perf.loadTimeMs ? (perf.loadTimeMs/1000).toFixed(1)+'s' : '0s'), data: [] },
-          firstContentfulPaint: { current: perf.firstContentfulPaintMs ? (perf.firstContentfulPaintMs/1000).toFixed(1)+'s' : '—', data: [] },
-          largestContentfulPaint: { current: perf.largestContentfulPaintMs ? (perf.largestContentfulPaintMs/1000).toFixed(1)+'s' : '—', data: [] }
+          loadTime: {
+            current: `${toSecNum(loadTimeMs).toFixed(1)}s`,
+            data: [toSecNum(loadTimeMs), toSecNum(loadTimeMs)]
+          },
+          firstContentfulPaint: {
+            current: fcpMs ? `${toSecNum(fcpMs).toFixed(1)}s` : '0.0s',
+            data: [toSecNum(fcpMs), toSecNum(fcpMs)]
+          },
+          largestContentfulPaint: {
+            current: lcpMs ? `${toSecNum(lcpMs).toFixed(1)}s` : '0.0s',
+            data: [toSecNum(lcpMs), toSecNum(lcpMs)]
+          }
         };
         const rawFindings = (data.analysis?.findings || []).slice(0,20) as BackendFinding[];
         const recommendations: RecommendationUI[] = rawFindings.map(f => {
