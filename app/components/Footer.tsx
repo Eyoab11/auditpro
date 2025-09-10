@@ -6,7 +6,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-[#0b0b0b] border-t border-white/10 text-white/90">
+    <footer className="w-full bg-gray-100 border-t border-gray-200 text-gray-900">
       <div className="max-w-6xl mx-auto px-4 py-12 grid gap-10 md:grid-cols-3">
         {/* Brand */}
         <div className="space-y-4">
@@ -14,7 +14,7 @@ export default function Footer() {
             <Image src="/globe.svg" alt="AuditPro" width={28} height={28} />
             <span className="font-bold text-lg tracking-tight">AuditPro</span>
           </div>
-          <p className="text-sm text-gray-300">
+          <p className="text-sm text-gray-600">
             AI-powered auditing to discover tags, improve performance, and report clear results.
           </p>
         </div>
@@ -22,25 +22,23 @@ export default function Footer() {
         {/* Links */}
         <nav aria-label="Footer navigation" className="grid grid-cols-2 gap-6 md:gap-10">
           <ul className="space-y-2 text-sm">
-            <li className="text-white/70 font-semibold">Product</li>
-            <li><a className="hover:text-purple-400" href="#features">Features</a></li>
-            <li><a className="hover:text-purple-400" href="#">Pricing</a></li>
-            <li><a className="hover:text-purple-400" href="#">Documentation</a></li>
+            <li className="text-gray-700 font-semibold">Product</li>
+            <li><a className="hover:text-purple-600" href="#features">Features</a></li>
+            <li><a className="hover:text-purple-600" href="#">Pricing</a></li>
+            <li><a className="hover:text-purple-600" href="#">Documentation</a></li>
           </ul>
           <ul className="space-y-2 text-sm">
-            <li className="text-white/70 font-semibold">Company</li>
-            <li><a className="hover:text-purple-400" href="#about">About</a></li>
-            <li><a className="hover:text-purple-400" href="#contact">Contact</a></li>
-            <li><a className="hover:text-purple-400" href="#">Careers</a></li>
+            <li className="text-gray-700 font-semibold">Company</li>
+            <li><a className="hover:text-purple-600" href="#">Careers</a></li>
           </ul>
         </nav>
 
         {/* Social */}
         <div>
-          <p className="text-sm text-white/70 mb-3">Follow</p>
+          <p className="text-sm text-gray-700 mb-3">Follow</p>
           <div className="flex items-center gap-3">
             <a
-              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 ring-1 ring-white/15"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 ring-1 ring-gray-300"
               href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -48,7 +46,7 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 ring-1 ring-white/15"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 ring-1 ring-gray-300"
               href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -56,7 +54,7 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 ring-1 ring-white/15"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 ring-1 ring-gray-300"
               href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -67,13 +65,13 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
+      <div className="border-t border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-600">
           <p>© {year} AuditPro. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <a className="hover:text-purple-400" href="#">Privacy</a>
-            <a className="hover:text-purple-400" href="#">Terms</a>
-            <a className="hover:text-purple-400" href="#">Security</a>
+            <a className="hover:text-purple-600" href="#">Privacy</a>
+            <a className="hover:text-purple-600" href="#">Terms</a>
+            <a className="hover:text-purple-600" href="#">Security</a>
           </div>
         </div>
       </div>

@@ -72,13 +72,8 @@ export default function Home() {
           <span className="font-bold text-xl tracking-tight">AuditPro</span>
         </div>
         
-        {/* Desktop Navigation */}
-        <ul className="hidden md:flex gap-8 text-base font-medium">
-          <li><a href="#features" className="hover:text-purple-600 transition">Features</a></li>
-          <li><a href="#about" className="hover:text-purple-600 transition">About</a></li>
-          <li><a href="#contact" className="hover:text-purple-600 transition">Contact</a></li>
-          <li><Link href="/report-history" className="hover:text-purple-600 transition">History</Link></li>
-        </ul>
+  {/* Desktop Navigation */}
+  {/* features link removed per request */}
 
         {/* Mobile Hamburger Menu */}
         <div className="md:hidden flex items-center gap-4">
@@ -119,34 +114,7 @@ export default function Home() {
         {isMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-50 border-t">
             <div className="px-8 py-4 space-y-4">
-              <a 
-                href="#features" 
-                className="block py-2 hover:text-purple-600 transition"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Features
-              </a>
-              <a 
-                href="#about" 
-                className="block py-2 hover:text-purple-600 transition"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                About
-              </a>
-              <a 
-                href="#contact" 
-                className="block py-2 hover:text-purple-600 transition"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contact
-              </a>
-              <Link 
-                href="/report-history" 
-                className="block py-2 hover:text-purple-600 transition"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                History
-              </Link>
+              {/* features link removed from mobile menu */}
               <div className="pt-4 border-t border-gray-200">
                 <Link 
                   href="/auth/signup" 
@@ -190,7 +158,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
             Simplify Your Audits<br />With <span className="text-purple-600">AuditPro</span>
           </h1>
-          <p className="text-lg md:text-xl mb-8 text-gray-700 dark:text-gray-300">
+          <p className="text-lg md:text-xl mb-8 text-gray-700">
             Streamline your audit process, improve accuracy, and save time with our modern audit management platform.
           </p>
           {/* Search field with side button */}
@@ -204,12 +172,12 @@ export default function Home() {
           >
             {/* Gradient border wrapper to emulate neon outline */}
             <div className="rounded-2xl bg-gradient-to-r from-purple-500/60 to-purple-500/20 p-[2px] shadow-[0_0_25px_rgba(139,92,246,0.25)]">
-        <div className="flex items-center overflow-hidden rounded-2xl bg-black/40 backdrop-blur-sm ring-1 ring-inset ring-purple-500/20">
+        <div className="flex items-center overflow-hidden rounded-2xl bg-white/90 backdrop-blur-sm ring-1 ring-inset ring-purple-500/20">
                 <input
                   type="url"
                   inputMode="url"
                   placeholder="Enter your website URL (e.g., https://example.com)"
-          className="w-full h-11 bg-transparent px-4 text-left text-base text-white/90 placeholder:text-white/50 focus:outline-none"
+          className="w-full h-11 bg-transparent px-4 text-left text-base text-gray-900 placeholder:text-gray-500 focus:outline-none"
                   aria-label="Website URL"
                 />
                 <button
@@ -234,9 +202,9 @@ export default function Home() {
         </motion.div>
       </section>
       {/* Features Section */}
-      <section className="w-full bg-[#181818] py-24 flex flex-col items-center justify-center">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-3">Why Choose AuditPro</h2>
-        <p className="text-base text-center text-gray-300 mb-8">Powerful features designed to transform your website performance</p>
+      <section className="w-full bg-gray-50 py-24 flex flex-col items-center justify-center">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-3 text-gray-900">Why Choose AuditPro</h2>
+        <p className="text-base text-center text-gray-600 mb-8">Powerful features designed to transform your website performance</p>
         <div className="flex flex-col md:flex-row gap-8 justify-center items-center w-full max-w-5xl mx-auto">
           {/* Card 1 */}
           <motion.div
@@ -245,20 +213,20 @@ export default function Home() {
             viewport={{ once: true, amount: 0.5 }}
             whileHover={{ scale: 1.06, boxShadow: "0 0 32px 0 #a855f7, 0 2px 16px #000" }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="flex-1 min-w-[260px] bg-[#181818] border border-purple-700/30 rounded-xl p-10 flex flex-col items-center shadow-lg cursor-pointer"
+            className="flex-1 min-w-[260px] bg-white border border-purple-200 rounded-xl p-10 flex flex-col items-center shadow-lg cursor-pointer"
           >
             <div className="mb-6 flex items-center justify-center">
-              <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-900/30">
+              <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-100">
                 {/* Chip Icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-purple-500">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-purple-600">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 9h6v6H9V9z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 9h2m2-6v2m10-2v2m2 4h2m-2 10v2m-10 2v-2m-2-4H3m16-4h2" />
                 </svg>
               </span>
             </div>
-            <span className="text-xl font-bold text-white mb-2 text-center">Automated Tag Auditing</span>
-            <p className="text-sm text-gray-400 text-center mb-6">Instantly detect and analyze all tracking tags, pixels, and scripts on your website with AI-powered precision.</p>
-            <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-purple-500 text-purple-500 font-medium hover:bg-purple-900/20 transition">
+            <span className="text-xl font-bold text-gray-900 mb-2 text-center">Automated Tag Auditing</span>
+            <p className="text-sm text-gray-600 text-center mb-6">Instantly detect and analyze all tracking tags, pixels, and scripts on your website with AI-powered precision.</p>
+            <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-purple-500 text-purple-500 font-medium hover:bg-purple-50 transition">
               Learn More
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -272,19 +240,19 @@ export default function Home() {
             viewport={{ once: true, amount: 0.5 }}
             whileHover={{ scale: 1.06, boxShadow: "0 0 32px 0 #14b8a6, 0 2px 16px #000" }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="flex-1 min-w-[260px] bg-[#181818] border border-teal-600/30 rounded-xl p-10 flex flex-col items-center shadow-lg cursor-pointer"
+            className="flex-1 min-w-[260px] bg-white border border-teal-200 rounded-xl p-10 flex flex-col items-center shadow-lg cursor-pointer"
           >
             <div className="mb-6 flex items-center justify-center">
-              <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-900/30">
+              <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100">
                 {/* Lightning Icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-teal-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-teal-600">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </span>
             </div>
-            <span className="text-xl font-bold text-white mb-2 text-center">Performance Optimization</span>
-            <p className="text-sm text-gray-400 text-center mb-6">Identify bottlenecks and receive actionable recommendations to boost your website&apos;s speed and user experience.</p>
-            <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-teal-400 text-teal-400 font-medium hover:bg-teal-900/20 transition">
+            <span className="text-xl font-bold text-gray-900 mb-2 text-center">Performance Optimization</span>
+            <p className="text-sm text-gray-600 text-center mb-6">Identify bottlenecks and receive actionable recommendations to boost your website&apos;s speed and user experience.</p>
+            <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-teal-500 text-teal-500 font-medium hover:bg-teal-50 transition">
               Learn More
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -298,19 +266,19 @@ export default function Home() {
             viewport={{ once: true, amount: 0.5 }}
             whileHover={{ scale: 1.06, boxShadow: "0 0 32px 0 #f97316, 0 2px 16px #000" }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="flex-1 min-w-[260px] bg-[#181818] border border-orange-600/30 rounded-xl p-10 flex flex-col items-center shadow-lg cursor-pointer relative"
+            className="flex-1 min-w-[260px] bg-white border border-orange-200 rounded-xl p-10 flex flex-col items-center shadow-lg cursor-pointer relative"
           >
             <div className="mb-6 flex items-center justify-center">
-              <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-900/30">
+              <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-100">
                 {/* Bulb Icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-orange-500">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-orange-600">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 2a7 7 0 0 1 7 7c0 2.386-1.28 4.434-3.2 5.6A2.5 2.5 0 0 1 14 18v1a2 2 0 1 1-4 0v-1a2.5 2.5 0 0 1-1.8-3.4A7.001 7.001 0 0 1 5 9a7 7 0 0 1 7-7z" />
                 </svg>
               </span>
             </div>
-            <span className="text-xl font-bold text-white mb-2 text-center">Actionable AI Recommendations</span>
-            <p className="text-sm text-gray-400 text-center mb-6">Get intelligent, prioritized suggestions powered by machine learning to fix issues and improve your site.</p>
-            <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-orange-500 text-orange-500 font-medium hover:bg-orange-900/20 transition">
+            <span className="text-xl font-bold text-gray-900 mb-2 text-center">Actionable AI Recommendations</span>
+            <p className="text-sm text-gray-600 text-center mb-6">Get intelligent, prioritized suggestions powered by machine learning to fix issues and improve your site.</p>
+            <a href="#" className="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-orange-500 text-orange-500 font-medium hover:bg-orange-50 transition">
               Learn More
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -320,9 +288,9 @@ export default function Home() {
         </div>
       </section>
       {/* Impact Section */}
-      <section className="w-full bg-[#181818] py-24 flex flex-col items-center justify-center">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-3">AuditPro Impact</h2>
-        <p className="text-base text-center text-gray-300 mb-8">Real results from our AI-powered website auditing platform</p>
+      <section className="w-full bg-white py-24 flex flex-col items-center justify-center">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-3 text-gray-900">AuditPro Impact</h2>
+        <p className="text-base text-center text-gray-600 mb-8">Real results from our AI-powered website auditing platform</p>
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center w-full max-w-4xl mx-auto">
           {/* Stat 1 */}
           <motion.div
@@ -331,11 +299,11 @@ export default function Home() {
             viewport={{ once: true, amount: 0.5 }}
             whileHover={{ scale: 1.06, boxShadow: "0 0 32px 0 #a855f7, 0 2px 16px #000" }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="flex-1 min-w-[180px] bg-[#181818] border border-purple-700/30 rounded-lg p-6 flex flex-col items-center shadow-md cursor-pointer"
+            className="flex-1 min-w-[180px] bg-gray-50 border border-purple-200 rounded-lg p-6 flex flex-col items-center shadow-md cursor-pointer"
           >
-            <span className="text-2xl md:text-3xl font-extrabold text-purple-500 mb-1">1.3M+</span>
-            <span className="text-base font-bold text-white mb-1">Websites Scanned</span>
-            <span className="text-sm text-gray-400">Comprehensive audits completed</span>
+            <span className="text-2xl md:text-3xl font-extrabold text-purple-600 mb-1">1.3M+</span>
+            <span className="text-base font-bold text-gray-900 mb-1">Websites Scanned</span>
+            <span className="text-sm text-gray-600">Comprehensive audits completed</span>
           </motion.div>
           {/* Stat 2 */}
           <motion.div
@@ -344,11 +312,11 @@ export default function Home() {
             viewport={{ once: true, amount: 0.5 }}
             whileHover={{ scale: 1.06, boxShadow: "0 0 32px 0 #14b8a6, 0 2px 16px #000" }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="flex-1 min-w-[180px] bg-[#181818] border border-teal-600/30 rounded-lg p-6 flex flex-col items-center shadow-md cursor-pointer"
+            className="flex-1 min-w-[180px] bg-gray-50 border border-teal-200 rounded-lg p-6 flex flex-col items-center shadow-md cursor-pointer"
           >
-            <span className="text-2xl md:text-3xl font-extrabold text-teal-400 mb-1">8.7M+</span>
-            <span className="text-base font-bold text-white mb-1">Issues Identified</span>
-            <span className="text-sm text-gray-400">Problems detected and analyzed</span>
+            <span className="text-2xl md:text-3xl font-extrabold text-teal-600 mb-1">8.7M+</span>
+            <span className="text-base font-bold text-gray-900 mb-1">Issues Identified</span>
+            <span className="text-sm text-gray-600">Problems detected and analyzed</span>
           </motion.div>
           {/* Stat 3 */}
           <motion.div
@@ -357,19 +325,19 @@ export default function Home() {
             viewport={{ once: true, amount: 0.5 }}
             whileHover={{ scale: 1.06, boxShadow: "0 0 32px 0 #f97316, 0 2px 16px #000" }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="flex-1 min-w-[180px] bg-[#181818] border border-orange-600/30 rounded-lg p-6 flex flex-col items-center shadow-md cursor-pointer"
+            className="flex-1 min-w-[180px] bg-gray-50 border border-orange-200 rounded-lg p-6 flex flex-col items-center shadow-md cursor-pointer"
           >
-            <span className="text-2xl md:text-3xl font-extrabold text-orange-500 mb-1">Up to 70%</span>
-            <span className="text-base font-bold text-white mb-1">Optimization Achieved</span>
-            <span className="text-sm text-gray-400">Performance improvement potential</span>
+            <span className="text-2xl md:text-3xl font-extrabold text-orange-600 mb-1">Up to 70%</span>
+            <span className="text-base font-bold text-gray-900 mb-1">Optimization Achieved</span>
+            <span className="text-sm text-gray-600">Performance improvement potential</span>
           </motion.div>
         </div>
       </section>
       {/* Testimonials / Value Carousel Section */}
-      <section className="w-full bg-[#0f0f0f] py-24 flex items-center justify-center">
+      <section className="w-full bg-gray-100 py-24 flex items-center justify-center">
         <div className="w-full max-w-5xl px-4">
-          <h3 className="text-3xl md:text-4xl font-extrabold text-center mb-4">What Teams Achieve</h3>
-          <p className="text-base text-center text-gray-300 mb-10">Results and customer quotes rotating every 10 seconds, with manual controls</p>
+          <h3 className="text-3xl md:text-4xl font-extrabold text-center mb-4 text-gray-900">What Teams Achieve</h3>
+          <p className="text-base text-center text-gray-600 mb-10">Results and customer quotes rotating every 10 seconds, with manual controls</p>
           <Carousel
             ariaLabel="AuditPro results carousel"
             heightClass="h-64 md:h-72"
@@ -377,60 +345,60 @@ export default function Home() {
               (
                 <div key="carousel-1" className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
                   <div className="space-y-3">
-                    <h4 className="text-2xl font-bold">70% Faster Tag Audits</h4>
-                    <p className="text-gray-300">Automate discovery of pixels, marketing tags, and scripts across your pages. Focus on insights, not manual checks.</p>
-                    <ul className="text-sm text-gray-400 list-disc pl-5">
+                    <h4 className="text-2xl font-bold text-gray-900">70% Faster Tag Audits</h4>
+                    <p className="text-gray-600">Automate discovery of pixels, marketing tags, and scripts across your pages. Focus on insights, not manual checks.</p>
+                    <ul className="text-sm text-gray-500 list-disc pl-5">
                       <li>Auto-detect misfired events</li>
                       <li>Map vendors and data flows</li>
                       <li>One-click export</li>
                     </ul>
                   </div>
-                  <div className="rounded-xl border border-white/10 bg-black/30 p-6">
+                  <div className="rounded-xl border border-gray-200 bg-white p-6">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-extrabold text-purple-500">70%</span>
-                      <span className="text-sm text-gray-400">avg. time saved</span>
+                      <span className="text-4xl font-extrabold text-purple-600">70%</span>
+                      <span className="text-sm text-gray-500">avg. time saved</span>
                     </div>
-                    <p className="mt-4 text-sm text-gray-300">“AuditPro cut our audit from days to hours.” — GrowthOps Lead</p>
+                    <p className="mt-4 text-sm text-gray-600">“AuditPro cut our audit from days to hours.” — GrowthOps Lead</p>
                   </div>
                 </div>
               ),
               (
                 <div key="carousel-2" className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
                   <div className="space-y-3">
-                    <h4 className="text-2xl font-bold">Performance You Can Feel</h4>
-                    <p className="text-gray-300">Pinpoint render-blockers and heavy scripts with prioritized fixes.</p>
-                    <ul className="text-sm text-gray-400 list-disc pl-5">
+                    <h4 className="text-2xl font-bold text-gray-900">Performance You Can Feel</h4>
+                    <p className="text-gray-600">Pinpoint render-blockers and heavy scripts with prioritized fixes.</p>
+                    <ul className="text-sm text-gray-500 list-disc pl-5">
                       <li>Script impact scoring</li>
                       <li>Lazy-load recommendations</li>
                       <li>Immediate wins highlighted</li>
                     </ul>
                   </div>
-                  <div className="rounded-xl border border-white/10 bg-black/30 p-6">
+                  <div className="rounded-xl border border-gray-200 bg-white p-6">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-extrabold text-teal-400">+18</span>
-                      <span className="text-sm text-gray-400">Lighthouse points</span>
+                      <span className="text-4xl font-extrabold text-teal-600">+18</span>
+                      <span className="text-sm text-gray-500">Lighthouse points</span>
                     </div>
-                    <p className="mt-4 text-sm text-gray-300">“Our LCP improved within a week.” — Web Perf Engineer</p>
+                    <p className="mt-4 text-sm text-gray-600">“Our LCP improved within a week.” — Web Perf Engineer</p>
                   </div>
                 </div>
               ),
               (
                 <div key="carousel-3" className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-center w-full">
                   <div className="space-y-3">
-                    <h4 className="text-2xl font-bold">Proof for Stakeholders</h4>
-                    <p className="text-gray-300">Share concise reports with deltas and clear next steps.</p>
-                    <ul className="text-sm text-gray-400 list-disc pl-5">
+                    <h4 className="text-2xl font-bold text-gray-900">Proof for Stakeholders</h4>
+                    <p className="text-gray-600">Share concise reports with deltas and clear next steps.</p>
+                    <ul className="text-sm text-gray-500 list-disc pl-5">
                       <li>Executive summaries</li>
                       <li>Issue owners and status</li>
                       <li>Audit history and trends</li>
                     </ul>
                   </div>
-                  <div className="rounded-xl border border-white/10 bg-black/30 p-6">
+                  <div className="rounded-xl border border-gray-200 bg-white p-6">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-extrabold text-orange-500">95%</span>
-                      <span className="text-sm text-gray-400">stakeholder clarity</span>
+                      <span className="text-4xl font-extrabold text-orange-600">95%</span>
+                      <span className="text-sm text-gray-500">stakeholder clarity</span>
                     </div>
-                    <p className="mt-4 text-sm text-gray-300">“The reports make adoption easy.” — Marketing Analytics Director</p>
+                    <p className="mt-4 text-sm text-gray-600">“The reports make adoption easy.” — Marketing Analytics Director</p>
                   </div>
                 </div>
               ),

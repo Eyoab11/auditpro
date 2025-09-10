@@ -71,8 +71,8 @@ export const Carousel = ({
     <div
       className={cn(
         "relative w-full overflow-hidden select-none",
-        "rounded-2xl border border-white/10 bg-[#111]/60 backdrop-blur",
-        "shadow-[0_0_30px_rgba(0,0,0,0.35)]",
+        "rounded-2xl border border-gray-200 bg-white",
+        "shadow-lg",
         heightClass,
         className
       )}
@@ -103,7 +103,7 @@ export const Carousel = ({
       <button
         type="button"
         aria-label="Previous slide"
-        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white ring-1 ring-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 ring-1 ring-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
         onClick={() => paginate(-1)}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
@@ -113,7 +113,7 @@ export const Carousel = ({
       <button
         type="button"
         aria-label="Next slide"
-        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white ring-1 ring-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
+        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 ring-1 ring-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
         onClick={() => paginate(1)}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
@@ -130,9 +130,9 @@ export const Carousel = ({
               key={i}
               type="button"
               aria-label={`Go to slide ${i + 1}`}
-      className={cn(
+              className={cn(
                 "w-2.5 h-2.5 rounded-full",
-                active ? "bg-purple-500" : "bg-white/30 hover:bg-white/50"
+                active ? "bg-purple-600" : "bg-gray-300 hover:bg-gray-400"
               )}
               onClick={() => setPage([i, i > itemIndex ? 1 : -1])}
             />

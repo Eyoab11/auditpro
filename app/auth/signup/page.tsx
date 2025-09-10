@@ -29,8 +29,8 @@ export default function SignupPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-[#181818] rounded-2xl p-8 shadow-lg border border-white/10">
+    <main className="min-h-screen bg-gray-50 text-gray-900 flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
         <h1 className="text-2xl font-bold text-center mb-6">Create Account</h1>
         <form onSubmit={handleSignup} className="space-y-4">
           <div>
@@ -42,7 +42,7 @@ export default function SignupPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 bg-black/40 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
               placeholder="Enter your name"
               required
             />
@@ -56,7 +56,7 @@ export default function SignupPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-black/40 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
               placeholder="Enter your email"
               required
             />
@@ -70,7 +70,7 @@ export default function SignupPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-black/40 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
               placeholder="Enter your password"
               required
             />
@@ -84,7 +84,7 @@ export default function SignupPage() {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-black/40 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
               placeholder="Confirm your password"
               required
             />
@@ -98,7 +98,7 @@ export default function SignupPage() {
           </button>
         </form>
         <div className="mt-6 text-center">
-          <Link href="/auth/login" className="text-purple-400 hover:text-purple-300">
+          <Link href="/auth/login" className="text-purple-600 hover:text-purple-700">
             Already have an account? Login
           </Link>
         </div>
