@@ -220,9 +220,9 @@ export default function Dashboard() {
 
   const renderSpinner = () => (
     <div className="px-6 pb-8 animate-pulse">
-      <div className="bg-[#181818] border border-white/10 rounded-xl p-8 flex flex-col items-center gap-4">
+      <div className="bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center gap-4">
         <div className="h-10 w-10 rounded-full border-4 border-purple-600 border-t-transparent animate-spin" aria-label="Loading" />
-        <p className="text-gray-400 text-sm">Processing audit... This may take up to a minute.</p>
+        <p className="text-gray-700 text-sm">Processing audit... This may take up to a minute.</p>
         {currentJobId && <p className="text-xs text-gray-500">Job ID: {currentJobId}</p>}
       </div>
     </div>

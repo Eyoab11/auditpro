@@ -245,13 +245,13 @@ export default function ReportDetailPage() {
               >
                 Settings
               </Link>
-              <div className="pt-4 border-t border-white/10">
+              <div className="pt-4 border-t border-gray-200">
                 <span className="block py-2 text-gray-400">Welcome, User</span>
                 <div className="mt-2 space-y-2">
                   <PdfDownloadButton jobId={reportId} />
                   <Link 
                     href="/report-history" 
-                    className="inline-block px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition"
+                    className="inline-block px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition text-gray-900"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Back to History

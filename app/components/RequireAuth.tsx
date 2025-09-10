@@ -22,7 +22,7 @@ export default function RequireAuth({ children }: { children: React.ReactNode })
   }, [user, loading, pathname, router]);
 
   if (!user && !PUBLIC_ROUTES.has(pathname)) {
-    return <div className="min-h-screen flex items-center justify-center text-white">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center text-gray-900">Loading...</div>;
   }
 
   return <>{children}</>;

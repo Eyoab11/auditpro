@@ -45,27 +45,27 @@ export default function UrlInput({ onAudit }: UrlInputProps) {
         <h2 className="text-3xl md:text-5xl font-extrabold mb-6 leading-tight">
           Audit Your Website<br />With <span className="text-purple-600">AuditPro</span>
         </h2>
-        <p className="text-lg md:text-xl mb-8 text-gray-300">
+  <p className="text-lg md:text-xl mb-8 text-black">
           Enter your website URL below to start a comprehensive audit and get actionable insights.
         </p>
 
         <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto" aria-label="Website audit">
-          {/* Gradient border wrapper to emulate neon outline */}
+          {/* Gradient border wrapper to emulate neon outline (matches landing page) */}
           <div className="rounded-2xl bg-gradient-to-r from-purple-500/60 to-purple-500/20 p-[2px] shadow-[0_0_25px_rgba(139,92,246,0.25)]">
-            <div className="flex items-center overflow-hidden rounded-2xl bg-black/40 backdrop-blur-sm ring-1 ring-inset ring-purple-500/20">
+            <div className="flex items-center overflow-hidden rounded-2xl bg-white/90 backdrop-blur-sm ring-1 ring-inset ring-purple-500/20">
               <input
                 type="url"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="Enter your website URL (e.g., https://example.com)"
-                className="w-full h-12 bg-transparent px-4 text-left text-base text-white/90 placeholder:text-white/50 focus:outline-none"
+                className="w-full h-11 bg-transparent px-4 text-left text-base text-black placeholder:text-gray-500 focus:outline-none"
                 aria-label="Website URL"
                 required
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="group flex items-center gap-2 rounded-l-none rounded-2xl bg-purple-600 px-6 h-12 text-white font-medium text-sm shadow hover:bg-purple-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 disabled:opacity-50"
+                className="group flex items-center gap-1 rounded-l-none rounded-2xl bg-purple-600 px-5 h-11 text-white font-medium text-sm shadow hover:bg-purple-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 disabled:opacity-50"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

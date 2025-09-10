@@ -129,11 +129,11 @@ export default function ReportHistoryPage() {
               >
                 Settings
               </Link>
-              <div className="pt-4 border-t border-white/10">
+              <div className="pt-4 border-t border-gray-200">
                 <span className="block py-2 text-gray-400">Welcome, {user?.name || 'User'}</span>
                 <Link 
                   href="/dashboard" 
-                  className="inline-block mt-2 px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition"
+                  className="inline-block mt-2 px-4 py-2 bg-gray-200 text-gray-900 rounded-lg shadow hover:bg-gray-300 transition"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   New Audit
@@ -151,32 +151,34 @@ export default function ReportHistoryPage() {
           <h2 className="text-xl font-semibold mb-6">Your Past Audits</h2>
           <div className="space-y-4">
             {reports.map((report) => (
-              <div key={report.id} className="bg-white border border-gray-200 rounded-xl p-6 hover:border-purple-500/30 transition">
+              <div key={report.id} className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
                 <div className="flex items-center justify-between">
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-4 mb-2">
                       <span className="text-sm text-gray-400">{report.date}</span>
                       <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        report.score >= 80 ? 'bg-green-500/20 text-green-400' :
-                        report.score >= 60 ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/20 text-red-400'
+                        report.score >= 80 ? 'bg-green-50 text-green-600' :
+                        report.score >= 60 ? 'bg-yellow-50 text-yellow-600' :
+                        'bg-red-50 text-red-600'
                       }`}>
                         Score: {report.score}
                       </span>
                     </div>
-                    <p className="text-white font-medium">{report.url}</p>
+                    <a href={report.url} target="_blank" rel="noreferrer" className="block text-base font-medium text-gray-800 truncate hover:underline">
+                      {report.url}
+                    </a>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 ml-6">
                     <Link
                       href={`/reports/${report.id}`}
-                      className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition text-sm font-medium"
+                      className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition text-sm font-medium text-white"
                     >
                       View Report
                     </Link>
                     <PdfDownloadButton 
                       jobId={report.id} 
                       disabled={report.score === 0}
-                      className="px-4 py-2 text-sm font-medium rounded-lg"
+                      className="px-4 py-2 text-sm font-medium rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white"
                     />
                   </div>
                 </div>
