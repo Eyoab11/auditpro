@@ -7,9 +7,9 @@ import { useState } from "react";
 export default function SettingsPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+  <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-8 py-6 shadow-sm bg-[#181818] border-b border-white/10 relative">
+  <nav className="flex items-center justify-between px-8 py-6 shadow-sm bg-white border-b border-gray-200 relative">
         <div className="flex items-center gap-2">
           <Image src="/globe.svg" alt="AuditPro Logo" width={32} height={32} />
           <span className="font-bold text-xl tracking-tight">AuditPro</span>
@@ -64,7 +64,7 @@ export default function SettingsPage() {
 
         {/* Mobile Menu Overlay */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-[#181818] border-b border-white/10 shadow-lg z-50">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50">
             <div className="px-8 py-4 space-y-4">
               <Link 
                 href="/dashboard" 
@@ -105,19 +105,19 @@ export default function SettingsPage() {
       {/* Main Content */}
       <main className="px-6 py-8">
         <div className="max-w-2xl mx-auto space-y-6">
-          <div className="bg-[#181818] border border-white/10 rounded-xl p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h3 className="text-lg font-semibold mb-4">Account Settings</h3>
             <div className="space-y-4">
-              <button className="w-full text-left px-4 py-3 bg-black/20 rounded-lg hover:bg-black/30 transition">
+              <button className="w-full text-left px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition text-gray-900">
                 Change Password
               </button>
-              <button className="w-full text-left px-4 py-3 bg-black/20 rounded-lg hover:bg-black/30 transition">
+              <button className="w-full text-left px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition text-gray-900">
                 Update Profile
               </button>
             </div>
           </div>
 
-          <div className="bg-[#181818] border border-white/10 rounded-xl p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h3 className="text-lg font-semibold mb-4">Email Preferences</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -135,13 +135,13 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <div className="bg-[#181818] border border-white/10 rounded-xl p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h3 className="text-lg font-semibold mb-4">Privacy & Security</h3>
             <div className="space-y-4">
-              <button className="w-full text-left px-4 py-3 bg-black/20 rounded-lg hover:bg-black/30 transition">
+              <button className="w-full text-left px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition text-gray-900">
                 Download My Data
               </button>
-              <button className="w-full text-left px-4 py-3 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition">
+              <button className="w-full text-left px-4 py-3 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
                 Delete Account
               </button>
             </div>

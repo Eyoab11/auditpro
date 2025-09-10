@@ -143,7 +143,7 @@ export default function ReportDetailPage() {
   }, [reportId]);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center text-white">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center text-gray-900">Loading...</div>;
   }
 
   if (error) {
@@ -152,10 +152,10 @@ export default function ReportDetailPage() {
 
   if (!report) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 text-gray-900 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Report Not Found</h1>
-          <Link href="/report-history" className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+          <Link href="/report-history" className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition text-white">
             Back to History
           </Link>
         </div>
@@ -164,9 +164,9 @@ export default function ReportDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-8 py-6 shadow-sm bg-[#181818] border-b border-white/10 relative">
+      <nav className="flex items-center justify-between px-8 py-6 shadow-sm bg-white border-b border-gray-200 relative">
         <div className="flex items-center gap-2">
           <Image src="/globe.svg" alt="AuditPro Logo" width={32} height={32} />
           <span className="font-bold text-xl tracking-tight">AuditPro</span>
@@ -213,16 +213,16 @@ export default function ReportDetailPage() {
 
         {/* Desktop Right Section */}
         <div className="hidden md:flex items-center gap-4">
-          <span className="text-gray-400">Welcome, User</span>
+          <span className="text-gray-600">Welcome, User</span>
           <PdfDownloadButton jobId={reportId} />
-          <Link href="/report-history" className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition">
+          <Link href="/report-history" className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition text-gray-900">
             Back to History
           </Link>
         </div>
 
         {/* Mobile Menu Overlay */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-[#181818] border-b border-white/10 shadow-lg z-50">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50">
             <div className="px-8 py-4 space-y-4">
               <Link 
                 href="/dashboard" 

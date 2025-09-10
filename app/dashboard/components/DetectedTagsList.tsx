@@ -34,16 +34,16 @@ export default function DetectedTagsList({ tags }: DetectedTagsListProps) {
   };
 
   return (
-    <div className="bg-[#181818] border border-white/10 rounded-xl p-6">
-      <h3 className="text-xl font-bold text-white mb-4">Detected Marketing Tags</h3>
+    <div className="bg-white border border-gray-200 rounded-xl p-6">
+      <h3 className="text-xl font-bold text-gray-900 mb-4">Detected Marketing Tags</h3>
       <div className="space-y-3">
         {tags.map((tag, index) => {
           const IconComponent = iconMap[tag.icon as keyof typeof iconMap];
           return (
-            <div key={index} className="flex items-center gap-4 p-3 bg-black/20 rounded-lg">
-              {IconComponent && <IconComponent className="w-6 h-6 text-purple-400" />}
+            <div key={index} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+              {IconComponent && <IconComponent className="w-6 h-6 text-purple-600" />}
               <div className="flex-1">
-                <span className="text-white font-medium">{tag.name}</span>
+                <span className="text-gray-900 font-medium">{tag.name}</span>
               </div>
               <span className={`font-semibold ${getStatusColor(tag.status)}`}>{tag.status}</span>
             </div>

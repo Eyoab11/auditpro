@@ -232,9 +232,9 @@ export default function Dashboard() {
 
   return (
     <RequireAuth>
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+  <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-8 py-6 shadow-sm bg-[#181818] border-b border-white/10 relative">
+  <nav className="flex items-center justify-between px-8 py-6 shadow-sm bg-white border-b border-gray-200 relative">
         <div className="flex items-center gap-2">
           <Image src="/globe.svg" alt="AuditPro Logo" width={32} height={32} />
           <span className="font-bold text-xl tracking-tight">AuditPro</span>
@@ -259,7 +259,7 @@ export default function Dashboard() {
             <div className="px-6 pb-8 space-y-8">
               {auditStatus === 'pending' && renderSpinner()}
               {auditStatus === 'failed' && !auditData && (
-                <div className="bg-[#181818] border border-white/10 rounded-xl p-6 text-sm">
+                <div className="bg-white border border-gray-200 rounded-xl p-6 text-sm">
                   <p className="text-red-400 font-medium mb-1">Audit failed</p>
                   <p className="text-red-300/80">{failureReason || 'Audit failed or timed out. Please retry.'}</p>
                   {currentJobId && <p className="text-xs text-gray-500 mt-2">Job ID: {currentJobId}</p>}
@@ -277,7 +277,7 @@ export default function Dashboard() {
               )}
 
               {/* Recent History */}
-              <div className="bg-[#181818] border border-white/10 rounded-xl p-6">
+              <div className="bg-white border border-gray-200 rounded-xl p-6">
                 <h3 className="text-lg font-semibold mb-4">Recent Audits</h3>
                 <ul className="space-y-2 text-sm">
                   {history.slice(0,5).map(item => (

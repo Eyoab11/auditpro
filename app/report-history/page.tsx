@@ -48,9 +48,9 @@ export default function ReportHistoryPage() {
 
   return (
     <RequireAuth>
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+  <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-8 py-6 shadow-sm bg-[#181818] border-b border-white/10 relative">
+  <nav className="flex items-center justify-between px-8 py-6 shadow-sm bg-white border-b border-gray-200 relative">
         <div className="flex items-center gap-2">
           <Image src="/globe.svg" alt="AuditPro Logo" width={32} height={32} />
           <span className="font-bold text-xl tracking-tight">AuditPro</span>
@@ -106,7 +106,7 @@ export default function ReportHistoryPage() {
 
         {/* Mobile Menu Overlay */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-[#181818] border-b border-white/10 shadow-lg z-50">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50">
             <div className="px-8 py-4 space-y-4">
               <Link 
                 href="/dashboard" 
@@ -151,7 +151,7 @@ export default function ReportHistoryPage() {
           <h2 className="text-xl font-semibold mb-6">Your Past Audits</h2>
           <div className="space-y-4">
             {reports.map((report) => (
-              <div key={report.id} className="bg-[#181818] border border-white/10 rounded-xl p-6 hover:border-purple-500/30 transition">
+              <div key={report.id} className="bg-white border border-gray-200 rounded-xl p-6 hover:border-purple-500/30 transition">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-4 mb-2">

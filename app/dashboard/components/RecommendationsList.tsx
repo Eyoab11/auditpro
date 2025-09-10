@@ -37,16 +37,16 @@ export default function RecommendationsList({ recommendations }: Recommendations
   };
 
   return (
-    <div className="bg-[#181818] border border-white/10 rounded-xl p-6">
-      <h3 className="text-xl font-bold text-white mb-4">Key Findings & Recommendations</h3>
+    <div className="bg-white border border-gray-200 rounded-xl p-6">
+      <h3 className="text-xl font-bold text-gray-900 mb-4">Key Findings & Recommendations</h3>
       <div className="space-y-4">
         {recommendations.map((rec, index) => (
           <div key={index} className={`p-4 rounded-lg border ${getTypeColor(rec.type)}`}>
             <div className="flex items-start justify-between mb-2">
-              <h4 className="text-lg font-semibold text-white">{rec.title}</h4>
+              <h4 className="text-lg font-semibold text-gray-900">{rec.title}</h4>
               <span className={`font-medium ${getImpactColor(rec.impact)}`}>{rec.impact} Impact</span>
             </div>
-            <p className="text-gray-300">{rec.description}</p>
+            <p className="text-gray-600">{rec.description}</p>
           </div>
         ))}
       </div>
