@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 
-interface Props { jobId: string; disabled?: boolean; }
+interface Props { jobId: string; disabled?: boolean; className?: string; }
 
-export default function PdfDownloadButton({ jobId, disabled }: Props) {
+export default function PdfDownloadButton({ jobId, disabled, className }: Props) {
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,11 +43,11 @@ export default function PdfDownloadButton({ jobId, disabled }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+  <div className="flex flex-col gap-2">
       <button
         onClick={handleDownload}
         disabled={loading || disabled || !token}
-        className={`px-6 py-3 rounded-lg font-semibold transition text-white ${loading ? 'bg-purple-400 cursor-wait' : 'bg-purple-600 hover:bg-purple-700'} disabled:opacity-50`}
+        className={`${className || 'px-6 py-3 rounded-lg font-semibold'} ${loading ? 'bg-purple-400 cursor-wait' : 'bg-purple-600 hover:bg-purple-700'} text-white transition disabled:opacity-50`}
       >
         {loading ? 'Generating...' : 'Download PDF Report'}
       </button>

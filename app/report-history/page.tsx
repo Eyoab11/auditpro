@@ -173,7 +173,11 @@ export default function ReportHistoryPage() {
                     >
                       View Report
                     </Link>
-                    <PdfDownloadButton jobId={report.id} disabled={report.score === 0} />
+                    <PdfDownloadButton 
+                      jobId={report.id} 
+                      disabled={report.score === 0}
+                      className="px-4 py-2 text-sm font-medium rounded-lg"
+                    />
                   </div>
                 </div>
               </div>
