@@ -10,21 +10,25 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
   const { register, loading } = useAuth();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
+
     try {
       await register(name, email, password);
       router.push('/dashboard');
     } catch (err) {
       console.error(err);
-      alert((err as Error).message || 'Signup failed');
+      setError((err as Error).message || 'Signup failed');
     }
   };
 
@@ -32,6 +36,11 @@ export default function SignupPage() {
     <main className="min-h-screen bg-gray-50 text-gray-900 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
         <h1 className="text-2xl font-bold text-center mb-6">Create Account</h1>
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSignup} className="space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-1">
